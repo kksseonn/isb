@@ -1,6 +1,17 @@
 import json
 
-def encrypt_text(text, key):
+def encrypt_text(text: str, key: dict) -> str:
+    """
+    Encrypts the given text using the provided key.
+
+    Args:
+        text (str): The text to be encrypted.
+        key (dict): The encryption key where keys are uppercase characters
+                    and values are their corresponding encrypted forms.
+
+    Returns:
+        str: The encrypted text.
+    """
     encrypted_text = ''
     for char in text:
         if char.upper() in key:
@@ -9,7 +20,18 @@ def encrypt_text(text, key):
             encrypted_text += char
     return encrypted_text
 
-def decrypt_text(encrypted_text, key):
+def decrypt_text(encrypted_text: str, key: dict) -> str:
+    """
+    Decrypts the given text using the provided key.
+
+    Args:
+        encrypted_text (str): The text to be decrypted.
+        key (dict): The encryption key where values are encrypted characters
+                    and keys are their corresponding decrypted forms.
+
+    Returns:
+        str: The decrypted text.
+    """
     decrypted_text = ''
     reverse_key = {value: key for key, value in key.items()}
     for char in encrypted_text:
