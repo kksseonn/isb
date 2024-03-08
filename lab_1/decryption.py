@@ -1,7 +1,10 @@
 import json
 import logging
+
 from collections import Counter
+
 from encryption import read_from_file, write_to_file
+
 
 logging.basicConfig(level=logging.INFO)
 
