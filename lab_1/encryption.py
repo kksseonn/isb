@@ -12,7 +12,8 @@ def read_from_file(file_path: str) -> str:
         with open(file_path, 'r', encoding='utf-8') as f:
             return f.read()
     except Exception as e:
-        logging.error(f"An error occurred while reading the file '{file_path}': {e}")
+        logging.error(
+            f"An error occurred while reading the file '{file_path}': {e}")
         return ''
 
 
@@ -25,7 +26,28 @@ def write_to_file(file_path: str, data: str) -> None:
             f.write(data)
         logging.info(f"Data written to '{file_path}' successfully.")
     except Exception as e:
-        logging.error(f"An error occurred while writing to the file '{file_path}': {e}")
+        logging.error(
+            f"An error occurred while writing to the file '{file_path}': {e}")
+
+
+def load_json_file(json_file_path: str) -> dict:
+    """
+    Load encryption key from the specified file.
+
+    Args:
+        key_path (str): The path to the file containing the encryption key.
+
+    Returns:
+        dict: The encryption key loaded from the file.
+    """
+    try:
+        with open(json_file_path, encoding='utf-8') as f:
+            key = json.load(f)
+        return key
+    except Exception as e:
+        logging.error(
+            f"An error occurred while loading the key from '{json_file_path}': {e}")
+        return {}
 
 
 def encrypt_text(text_path: str, key_path: str) -> str:
@@ -43,8 +65,7 @@ def encrypt_text(text_path: str, key_path: str) -> str:
     encrypted_text = ''
     try:
         text = read_from_file(text_path)
-        with open(key_path, encoding='utf-8') as f:
-            key = json.load(f)
+        key = load_json_file(key_path)
         for char in text:
             if char.upper() in key:
                 encrypted_text += key[char.upper()]
@@ -70,8 +91,7 @@ def decrypt_text(text_path: str, key_path: str) -> str:
     decrypted_text = ''
     try:
         text = read_from_file(text_path)
-        with open(key_path, encoding='utf-8') as f:
-            key = json.load(f)
+        key = load_json_file(key_path)
         reverse_key = {value: key for key, value in key.items()}
         for char in text:
             if char.upper() in reverse_key:
@@ -90,8 +110,9 @@ if __name__ == "__main__":
         encrypted_text = encrypt_text(options['original_text'], options['key'])
         write_to_file(options['encrypted_text'], encrypted_text)
 
-        decrypted_text = decrypt_text(options['encrypted_text'], options['key'])
+        decrypted_text = decrypt_text(
+            options['encrypted_text'], options['key'])
         write_to_file(options['decrypted_text'], decrypted_text)
-        
+
     except Exception as e:
         logging.error(f"An error occurred: {e}")

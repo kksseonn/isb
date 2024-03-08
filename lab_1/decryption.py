@@ -3,7 +3,7 @@ import logging
 
 from collections import Counter
 
-from encryption import read_from_file, write_to_file
+from encryption import read_from_file, write_to_file, load_json_file
 
 
 logging.basicConfig(level=logging.INFO)
@@ -58,8 +58,7 @@ def replace_keys_with_values(json_file: str, input_file: str, output_file: str) 
         None
     """
     try:
-        with open(json_file, 'r', encoding='utf-8') as f:
-            json_data = json.load(f)
+        json_data = load_json_file(json_file)
     except Exception as e:
         logging.error(f"An error occurred while reading the JSON file: {e}")
         return
@@ -86,8 +85,10 @@ if __name__ == "__main__":
     try:
         with open("lab_1/options.json", "r") as options_file:
             options = json.load(options_file)
-        frequency_analysis(options['input_file'], options['output_file'])
-        replace_keys_with_values(
-            options['json_file'], options['input_file'], options['output_file2'])
+        frequency_analysis(options['input_file'], 
+                           options['output_file'])
+        replace_keys_with_values(options['json_file'], 
+                                 options['input_file'], 
+                                 options['output_file2'])
     except Exception as e:
         logging.error(f"An error occurred: {e}")
