@@ -1,7 +1,7 @@
 import json
 import logging
 from collections import Counter
-
+from encryption import read_from_file, write_to_file
 
 logging.basicConfig(level=logging.INFO)
 
@@ -18,17 +18,18 @@ def frequency_analysis(input_file: str, output_file: str) -> None:
         None
     """
     try:
-        with open(input_file, 'r', encoding='utf-8') as f:
-            original_text = f.read()
+        original_text = read_from_file(input_file)
     except Exception as e:
         logging.error(f"An error occurred while reading the input file: {e}")
         return
+
     character_count = Counter(original_text)
     total_characters = sum(character_count.values())
-    character_frequency_percentage = {char: (
-        count / total_characters * 100) for char, count in character_count.items()}
+    character_frequency_percentage = {
+        char: count / total_characters * 100 for char, count in character_count.items()}
     sorted_character_frequency = dict(sorted(
         character_frequency_percentage.items(), key=lambda item: item[1], reverse=True))
+
     try:
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(sorted_character_frequency, f,
@@ -61,8 +62,7 @@ def replace_keys_with_values(json_file: str, input_file: str, output_file: str) 
         return
 
     try:
-        with open(input_file, 'r', encoding='utf-8') as f:
-            original_text = f.read()
+        original_text = read_from_file(input_file)
     except Exception as e:
         logging.error(f"An error occurred while reading the input file: {e}")
         return
@@ -71,8 +71,7 @@ def replace_keys_with_values(json_file: str, input_file: str, output_file: str) 
         original_text = original_text.replace(key, value)
 
     try:
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(original_text)
+        write_to_file(output_file, original_text)
         logging.info(
             "Replacement completed successfully. Results written to the output file.")
     except Exception as e:
