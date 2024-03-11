@@ -22,26 +22,23 @@ def frequency_analysis(input_file: str, output_file: str) -> None:
     """
     try:
         original_text = read_from_file(input_file)
-    except Exception as e:
-        logging.error(f"An error occurred while reading the input file: {e}")
-        return
-
-    character_count = Counter(original_text)
-    total_characters = sum(character_count.values())
-    character_frequency_percentage = {
-        char: count / total_characters * 100 for char, count in character_count.items()}
-    sorted_character_frequency = dict(sorted(
-        character_frequency_percentage.items(), key=lambda item: item[1], reverse=True))
-
-    try:
+        character_count = Counter(original_text)
+        total_characters = sum(character_count.values())
+        character_frequency_percentage = {
+            char: count / total_characters * 100 for char, count in character_count.items()}
+        sorted_character_frequency = dict(sorted(
+            character_frequency_percentage.items(), key=lambda item: item[1], reverse=True))
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(sorted_character_frequency, f,
                       ensure_ascii=False, indent=4)
         logging.info(
             "Frequency analysis results (sorted by frequency and represented as percentages) written to JSON file successfully.")
+    except FileNotFoundError as e:
+        logging.error(f"The input file '{input_file}' was not found.")
+    except PermissionError as e:
+        logging.error(f"Permission denied to access the file: {e}")
     except Exception as e:
-        logging.error(
-            f"An error occurred while writing to the output file: {e}")
+        logging.error(f"An error occurred during frequency analysis: {e}")
 
 
 def replace_keys_with_values(json_file: str, input_file: str, output_file: str) -> None:
@@ -59,26 +56,19 @@ def replace_keys_with_values(json_file: str, input_file: str, output_file: str) 
     """
     try:
         json_data = load_json_file(json_file)
-    except Exception as e:
-        logging.error(f"An error occurred while reading the JSON file: {e}")
-        return
-
-    try:
         original_text = read_from_file(input_file)
-    except Exception as e:
-        logging.error(f"An error occurred while reading the input file: {e}")
-        return
-
-    for key, value in json_data.items():
-        original_text = original_text.replace(key, value)
-
-    try:
+        for key, value in json_data.items():
+            original_text = original_text.replace(key, value)
         write_to_file(output_file, original_text)
         logging.info(
             "Replacement completed successfully. Results written to the output file.")
+    except FileNotFoundError as e:
+        logging.error(f"The file '{e.filename}' was not found.")
+    except PermissionError as e:
+        logging.error(f"Permission denied to access the file: {e}")
     except Exception as e:
         logging.error(
-            f"An error occurred while writing to the output file: {e}")
+            f"An error occurred during replacement: {e}")
 
 
 if __name__ == "__main__":
@@ -90,5 +80,9 @@ if __name__ == "__main__":
         replace_keys_with_values(options['json_file'], 
                                  options['input_file'], 
                                  options['output_file2'])
+    except FileNotFoundError as e:
+        logging.error(f"The options file '{e.filename}' was not found.")
+    except PermissionError as e:
+        logging.error(f"Permission denied to access the file: {e}")
     except Exception as e:
         logging.error(f"An error occurred: {e}")
