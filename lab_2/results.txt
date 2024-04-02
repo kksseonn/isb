@@ -1,4 +1,6 @@
-C++ frequency_bit_test: 0.8555778168267576
-Java frequency_bit_test: 0.5701581024006669
-C++ consecutive bits test: 0.5712907138882591
-Java consecutive bits test: 0.6248468681951431
+C++ frequency_bit_test: 0.2888443663464849
+Java frequency_bit_test: 0.8596837951986662
+C++ consecutive bits test: 0.4287092861117408
+Java consecutive bits test: 0.3751531318048569
+C++ longest sequence test: 0.8691569900967281
+Java longest sequence test: 0.1432086100699848
