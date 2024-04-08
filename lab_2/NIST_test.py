@@ -1,6 +1,5 @@
 import json
 import logging
-from collections import Counter
 from math import sqrt
 from scipy.special import erfc, gammainc
 
@@ -20,18 +19,14 @@ def frequency_bit_test(sequence: str) -> float:
         float: The p-value of the test.
     """
     try:
-        sequence = [1 if int(bit) == 1 else -1 for bit in sequence]
-        counts = Counter(sequence)
-        n_negatives = counts[-1]
-        n_positives = counts[1]
-        total_length = n_negatives + n_positives
-        value = (n_positives - n_negatives) / sqrt(total_length)
+        n_zeros = sequence.count('0')
+        n_ones = sequence.count('1')
+        total_length = len(sequence)
+        value = (n_ones - n_zeros) / sqrt(total_length)
         p_value = erfc(abs(value) / sqrt(2))
         return p_value
     except Exception as e:
         logging.error(f"An error occurred in frequency_bit_test: {e}")
-        return None
-
 
 def consecutive_bits_test(sequence: str) -> float:
     """
@@ -61,7 +56,6 @@ def consecutive_bits_test(sequence: str) -> float:
         return p_value
     except Exception as e:
         logging.error(f"An error occurred in consecutive_bits_test: {e}")
-        return None
 
 
 def longest_sequence_test(sequence: str) -> float:
@@ -78,6 +72,7 @@ def longest_sequence_test(sequence: str) -> float:
         block_size = 8
         blocks = [sequence[i:i + block_size] for i in range(0, len(sequence), block_size)]
         statistics = {"v1": 0, "v2": 0, "v3": 0, "v4": 0}
+        
         for block in blocks:
             max_length = 0
             current_length = 0
@@ -87,20 +82,22 @@ def longest_sequence_test(sequence: str) -> float:
                     max_length = max(max_length, current_length)
                 else:
                     current_length = 0
-            if max_length <= 1:
-                statistics["v1"] += 1
-            elif max_length == 2:
-                statistics["v2"] += 1
-            elif max_length == 3:
-                statistics["v3"] += 1
-            else:
-                statistics["v4"] += 1
+                    
+            match max_length:
+                case 0 | 1:
+                    statistics["v1"] += 1
+                case 2:
+                    statistics["v2"] += 1
+                case 3:
+                    statistics["v3"] += 1
+                case _:
+                    statistics["v4"] += 1
+        
         chi_sqrt = sum(pow(v - 16 * PI[k], 2) / (16 * PI[k]) for k, v in statistics.items())
         p_value = gammainc(3 / 2, chi_sqrt / 2)
         return p_value
     except Exception as e:
         logging.error(f"An error occurred in longest_sequence_test: {e}")
-        return None
 
 
 def write_to_file(file_path: str, data: str) -> None:
