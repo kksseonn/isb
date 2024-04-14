@@ -1,5 +1,5 @@
 import json
-from cryptography_utils import generate_keys, encrypt_data
+from cryptography_utils import generate_keys, encrypt_data, decrypt_data
 
 if __name__ == "__main__":
     with open("lab_3/options.json", "r") as options_file:
@@ -11,3 +11,5 @@ if __name__ == "__main__":
         generate_keys(options['generation'])
     elif mode == 'encryption':
         encrypt_data(options['encryption'])
+    elif mode == 'decryption':
+        decrypt_data(options['decryption'])

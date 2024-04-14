@@ -35,11 +35,11 @@ def generate_keys(options):
     
     print("Keys generated successfully.")
 
-def encrypt_data(settings):
-    input_file_path = settings['input_file']
-    public_key_path = settings['public_key']
-    encrypted_key_path = settings['encrypted_key']
-    output_file_path = settings['output_file']
+def encrypt_data(options):
+    input_file_path = options['input_file']
+    public_key_path = options['public_key']
+    encrypted_key_path = options['encrypted_key']
+    output_file_path = options['output_file']
     
     with open(input_file_path, 'rb') as f:
         plaintext = f.read()
@@ -74,3 +74,42 @@ def encrypt_data(settings):
         f.write(ciphertext)
     
     print("Data encrypted successfully.")
+
+def decrypt_data(options):
+    input_file_path = options['input_file']
+    private_key_path = options['private_key']
+    encrypted_key_path = options['encrypted_key']
+    output_file_path = options['output_file']
+    
+    with open(encrypted_key_path, 'rb') as f:
+        encrypted_key = f.read()
+    
+    with open(private_key_path, 'rb') as f:
+        private_key = serialization.load_pem_private_key(
+            f.read(),
+            password=None,
+            backend=default_backend()
+        )
+    symmetric_key = private_key.decrypt(
+        encrypted_key,
+        asymmetric_padding.OAEP(
+            mgf=asymmetric_padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    
+    with open(input_file_path, 'rb') as f:
+        iv = f.read(16)
+        ciphertext = f.read()
+    
+    cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(iv))
+    decryptor = cipher.decryptor()
+    unpadder = padding.PKCS7(128).unpadder()
+    plaintext = decryptor.update(ciphertext) + decryptor.finalize()
+    plaintext = unpadder.update(plaintext) + unpadder.finalize()
+    
+    with open(output_file_path, 'wb') as f:
+        f.write(plaintext)
+    
+    print("Data decrypted successfully.")

@@ -1,5 +1,5 @@
 {
-    "mode": "encryption",
+    "mode": "decryption",
 
     "generation": {
       "symmetric_key": "lab_3/files/symmetric_key.txt",
@@ -12,5 +12,11 @@
       "public_key": "lab_3/files/public_key.pem",
       "encrypted_key": "lab_3/files/encrypted_key.txt",
       "output_file": "lab_3/files/encrypted_file.txt"
+    },
+    "decryption": {
+      "input_file": "lab_3/files/encrypted_file.txt",
+      "private_key": "lab_3/files/private_key.pem",
+      "encrypted_key": "lab_3/files/encrypted_key.txt",
+      "output_file": "lab_3/files/decrypted_file.txt"
     }
   }
