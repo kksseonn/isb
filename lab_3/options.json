@@ -1,3 +1,8 @@
 {
-    
-}
+    "mode": "generation",
+    "generation": {
+      "symmetric_key": "lab_3/files/symmetric_key.txt",
+      "public_key": "lab_3/files/public_key.pem",
+      "private_key": "lab_3/files/private_key.pem"
+    }
+  }
