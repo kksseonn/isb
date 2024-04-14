@@ -1,8 +1,16 @@
 {
-    "mode": "generation",
+    "mode": "encryption",
+
     "generation": {
       "symmetric_key": "lab_3/files/symmetric_key.txt",
       "public_key": "lab_3/files/public_key.pem",
       "private_key": "lab_3/files/private_key.pem"
+    },
+
+    "encryption": {
+      "input_file": "lab_3/files/input_file.txt",
+      "public_key": "lab_3/files/public_key.pem",
+      "encrypted_key": "lab_3/files/encrypted_key.txt",
+      "output_file": "lab_3/files/encrypted_file.txt"
     }
   }
