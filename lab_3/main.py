@@ -2,9 +2,14 @@ import logging
 import json
 from cryptography_utils import generate_keys, encrypt_data, decrypt_data
 
+
 logging.basicConfig(level=logging.INFO)
 
+
 if __name__ == "__main__":
+    """
+    Main script to generate keys, encrypt data, or decrypt data based on the mode specified in the options file.
+    """
     try:
         with open("lab_3/options.json", "r") as options_file:
             options = json.load(options_file)
