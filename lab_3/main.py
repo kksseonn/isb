@@ -1,15 +1,22 @@
+import logging
 import json
 from cryptography_utils import generate_keys, encrypt_data, decrypt_data
 
+logging.basicConfig(level=logging.INFO)
+
 if __name__ == "__main__":
-    with open("lab_3/options.json", "r") as options_file:
+    try:
+        with open("lab_3/options.json", "r") as options_file:
             options = json.load(options_file)
             
-    mode = options['mode']
+        mode = options['mode']
+        
+        if mode == 'generation':
+            generate_keys(options['generation'])
+        elif mode == 'encryption':
+            encrypt_data(options['encryption'])
+        elif mode == 'decryption':
+            decrypt_data(options['decryption'])
     
-    if mode == 'generation':
-        generate_keys(options['generation'])
-    elif mode == 'encryption':
-        encrypt_data(options['encryption'])
-    elif mode == 'decryption':
-        decrypt_data(options['decryption'])
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
