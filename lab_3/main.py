@@ -16,12 +16,15 @@ if __name__ == "__main__":
             
         mode = options['mode']
         
-        if mode == 'generation':
-            generate_keys(options['generation'])
-        elif mode == 'encryption':
-            encrypt_data(options['encryption'])
-        elif mode == 'decryption':
-            decrypt_data(options['decryption'])
+        match mode:
+            case 'generation':
+                generate_keys(options['generation'])
+            case 'encryption':
+                encrypt_data(options['encryption'])
+            case 'decryption':
+                decrypt_data(options['decryption'])
+            case _:
+                raise ValueError(f"Invalid mode: {mode}")
     
     except Exception as e:
         logging.error(f"An error occurred: {e}")
