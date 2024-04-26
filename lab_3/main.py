@@ -1,6 +1,6 @@
 import logging
 import json
-from cryptography_utils import generate_keys, encrypt_data, decrypt_data
+from hybrid_crypto_system import HybridCryptoSystem
 
 
 logging.basicConfig(level=logging.INFO)
@@ -18,11 +18,11 @@ if __name__ == "__main__":
         
         match mode:
             case 'generation':
-                generate_keys(options['generation'])
+                HybridCryptoSystem.generate_keys(options['generation'])
             case 'encryption':
-                encrypt_data(options['encryption'])
+                HybridCryptoSystem.encrypt_data(options['encryption'])
             case 'decryption':
-                decrypt_data(options['decryption'])
+                HybridCryptoSystem.decrypt_data(options['decryption'])
             case _:
                 raise ValueError(f"Invalid mode: {mode}")
     
