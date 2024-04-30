@@ -1,5 +1,6 @@
 import os
 import logging
+
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
@@ -30,6 +31,7 @@ class SymmetricCrypto:
             return iv, ciphertext
         except Exception as e:
             logging.error(f"Error occurred while encrypting data: {e}")
+
 
     def decrypt(symmetric_key: bytes, iv: bytes, ciphertext: bytes) -> bytes:
         """

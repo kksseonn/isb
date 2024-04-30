@@ -1,4 +1,5 @@
 import logging
+
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
@@ -27,6 +28,7 @@ class AsymmetricCrypto:
         except Exception as e:
             logging.error(f"Error occurred while decrypting private key: {e}")
 
+
     def decrypt_with_private_key(private_key, encrypted_data: bytes) -> bytes:
         """
         Decrypt data using the private key.
@@ -49,6 +51,7 @@ class AsymmetricCrypto:
             )
         except Exception as e:
             logging.error(f"Error occurred while decrypting data with private key: {e}")
+
 
     def encrypt_with_public_key(public_key, plaintext: bytes) -> bytes:
         """

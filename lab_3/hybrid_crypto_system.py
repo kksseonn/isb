@@ -1,7 +1,9 @@
 import os
 import logging
+
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+
 from asymmetric_crypto import AsymmetricCrypto
 from symmetric_crypto import SymmetricCrypto
 from file_utils import read_file, write_file
@@ -53,6 +55,7 @@ class HybridCryptoSystem:
 
         logging.info("Keys generated successfully.")
 
+
     def encrypt_data(options: dict) -> None:
         """
         Encrypt data using RSA and symmetric key, and save to a file.
@@ -87,6 +90,7 @@ class HybridCryptoSystem:
 
         except Exception as e:
             logging.error(f"Error occurred while encrypting data: {e}")
+
 
     def decrypt_data(options: dict) -> None:
         """
