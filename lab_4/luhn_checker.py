@@ -1,6 +1,18 @@
 import logging
 
-def luhn_algorithm(card_number):
+
+logging.basicConfig(level=logging.INFO)
+
+
+def luhn_algorithm(card_number: str) -> bool:
+    """Check if the given card number passes the Luhn algorithm.
+
+    Args:
+        card_number (str): The card number to validate.
+
+    Returns:
+        bool: True if the card number is valid, False otherwise.
+    """
     try:
         digits = [int(d) for d in card_number]
         checksum = digits.pop()
@@ -22,8 +34,16 @@ def luhn_algorithm(card_number):
             logging.info("The card data didn't pass the test for compliance with the Luhn algorithm.")
             return False
     except Exception as ex:
-        logging.error(f"An error occurred while executing the Luhn algorithm: {ex}\n")
+        logging.error(f"An error occurred while executing the Luhn algorithm: {ex}")
         return False
 
-def check_card_validity(card_number):
+def check_card_validity(card_number: str) -> bool:
+    """Check the validity of a card number.
+
+    Args:
+        card_number (str): The card number to validate.
+
+    Returns:
+        bool: True if the card number is valid, False otherwise.
+    """
     return luhn_algorithm(card_number)
