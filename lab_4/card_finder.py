@@ -1,9 +1,7 @@
 import hashlib
 import multiprocessing as mp
 import json
-
 from tqdm import tqdm
-
 
 def generate_card_number(bin_code, last_four, middle):
     return f"{bin_code}{middle:06d}{last_four}"
