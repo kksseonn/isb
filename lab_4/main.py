@@ -46,39 +46,40 @@ def main() -> None:
         logging.error(f"Failed to load options: {e}")
         return
 
-    if args.mode == 'find':
-        try:
-            for bin_code in options['bins']:
-                card_number = find_card_number_parallel(options['hash'], bin_code, options['last_numbers'], get_cpu_count())
-                if card_number:
-                    serialize_card_number(card_number, options['data_path'])
-                    logging.info(f"Found card number: {card_number}")
-                    break
-            else:
-                logging.info("Card number not found.")
-        except Exception as e:
-            logging.error(f"An error occurred in 'find' mode: {e}")
+    match args.mode:
+        case 'find':
+            try:
+                for bin_code in options['bins']:
+                    card_number = find_card_number_parallel(options['hash'], bin_code, options['last_numbers'], get_cpu_count())
+                    if card_number:
+                        serialize_card_number(card_number, options['data_path'])
+                        logging.info(f"Found card number: {card_number}")
+                        break
+                else:
+                    logging.info("Card number not found.")
+            except Exception as e:
+                logging.error(f"An error occurred in 'find' mode: {e}")
 
-    elif args.mode == 'check':
-        try:
-            card_number = options.get('card_number')
-            if not card_number:
-                logging.error("No card number provided in options for 'check' mode.")
-                return
+        case 'check':
+            try:
+                card_number = options.get('card_number')
+                if not card_number:
+                    logging.error("No card number provided in options for 'check' mode.")
+                    return
 
-            if check_card_validity(card_number):
-                logging.info("Card number is valid.")
-            else:
-                logging.info("Card number is invalid.")
-        except Exception as e:
-            logging.error(f"An error occurred in 'check' mode: {e}")
+                if check_card_validity(card_number):
+                    logging.info("Card number is valid.")
+                else:
+                    logging.info("Card number is invalid.")
+            except Exception as e:
+                logging.error(f"An error occurred in 'check' mode: {e}")
 
-    elif args.mode == 'measure':
-        try:
-            process_counts, time_measurements = time_measurement(tuple(options['bins']), options['hash'], options['last_numbers'])
-            visualize_time_measurements(process_counts, time_measurements)
-        except Exception as e:
-            logging.error(f"An error occurred in 'measure' mode: {e}")
+        case 'measure':
+            try:
+                process_counts, time_measurements = time_measurement(tuple(options['bins']), options['hash'], options['last_numbers'])
+                visualize_time_measurements(process_counts, time_measurements)
+            except Exception as e:
+                logging.error(f"An error occurred in 'measure' mode: {e}")
 
 if __name__ == "__main__":
     main()
